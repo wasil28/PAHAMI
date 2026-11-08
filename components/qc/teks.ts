@@ -1,0 +1,100 @@
+// Teks UI fitur Laporan QC (KEPUTUSAN §4 "Laporan QC") yang BELUM ada di lib/pesan.ts.
+// TODO(integrator): pindahkan ke LABEL/TEKS di lib/pesan.ts (file bersama, bukan milik area ini).
+
+export const TEKS_QC = {
+  // Tombol & dialog lapor
+  laporkan: "Laporkan",
+  laporkanTemuan: "Laporkan temuan QC",
+  judulDialog: "Laporkan temuan",
+  halaman: "Halaman",
+  judul: "Judul",
+  phJudul: "Mis. Tombol Simpan tidak merespons",
+  kategori: "Kategori",
+  pilihKategori: "Pilih kategori",
+  prioritas: "Prioritas",
+  deskripsi: "Deskripsi",
+  templateDeskripsi: "Langkah:\n1. \n\nYang terjadi:\n\nSeharusnya:\n",
+  screenshot: "Screenshot (opsional)",
+  screenshotJudul: "Screenshot",
+  pilihGambar: "Pilih gambar",
+  hapusScreenshot: "Hapus screenshot",
+  petunjukScreenshot: "PNG, JPG, atau WebP maks. 5 MB. Bisa juga tempel (Ctrl/⌘+V) gambar dari clipboard.",
+  pratinjauScreenshot: "Pratinjau screenshot",
+  tipeTidakDidukung: "Format gambar harus PNG, JPG, atau WebP.",
+  terlaluBesar: "Ukuran gambar maksimal 5 MB.",
+  judulTerlaluPendek: "Judul minimal {min} karakter.",
+  kirim: "Kirim laporan",
+  mengirim: "Mengirim…",
+  terkirim: "Laporan {kode} terkirim. Terima kasih!",
+  bukanPenguji: "Akunmu belum ditandai sebagai penguji, jadi belum bisa mengirim laporan.",
+  infoOtomatis: "Alamat halaman dan info perangkat (browser, ukuran layar, tema) ikut terkirim otomatis.",
+
+  // Daftar & status
+  laporanSaya: "Laporan saya",
+  laporanQc: "Laporan QC",
+  deskLaporanSaya: "Temuan QC yang sudah kamu kirim beserta tindak lanjut tim.",
+  deskAdmin: "Pilah dan tindak lanjuti temuan dari tim penguji.",
+  semua: "Semua",
+  filterStatus: "Filter status",
+  filterKategori: "Kategori",
+  semuaKategori: "Semua kategori",
+  catatanTim: "Catatan tim",
+  lihatScreenshot: "Lihat screenshot",
+  adaScreenshot: "Ada screenshot",
+  screenshotDari: "Screenshot laporan {kode}",
+  kosongSaya: "Belum ada laporan",
+  teksKosongSaya: "Temukan masalah saat mencoba aplikasi? Klik tombol “Laporkan” (ikon serangga) di pojok layar dari halaman mana pun. Halaman dan info perangkat tercatat otomatis.",
+  kosongFilter: "Tidak ada laporan dengan filter ini",
+  hapusFilter: "Hapus filter",
+  dilaporkan: "Dilaporkan {tanggal}",
+  oleh: "oleh {nama}",
+  eksporCsv: "Ekspor CSV",
+  terapkan: "Terapkan",
+  infoJumlah: "{total} laporan",
+
+  // Kolom tabel admin
+  kolKode: "Kode",
+  kolJudul: "Judul",
+  kolPelapor: "Pelapor",
+  kolKategori: "Kategori",
+  kolPrioritas: "Prioritas",
+  kolStatus: "Status",
+  kolTanggal: "Tanggal",
+  bukaDetail: "Buka detail {kode}",
+
+  // Detail admin
+  detail: "Detail laporan",
+  perangkat: "Perangkat",
+  layar: "Layar {lebar}×{tinggi} · tema {tema}",
+  tidakAdaInfo: "Tidak ada info perangkat.",
+  tindakLanjut: "Tindak lanjut",
+  status: "Status",
+  phCatatan: "Mis. Sudah diperbaiki di rilis berikutnya.",
+  simpan: "Simpan",
+  menyimpan: "Menyimpan…",
+  tersimpan: "Laporan {kode} diperbarui.",
+  ditanganiOleh: "Ditangani {nama}",
+  bukaHalaman: "Buka halaman (tab baru)",
+
+  // Penguji
+  penguji: "Penguji",
+  deskPenguji: "Akun yang bisa melapor (admin selalu bisa). Tandai akun teman setim lewat email terdaftarnya.",
+  tambahPenguji: "Tambah penguji",
+  emailPenguji: "Email akun",
+  phEmail: "nama@ecampus.ut.ac.id",
+  emailBelumTerdaftar: "Email belum terdaftar — minta temanmu daftar dulu.",
+  pengujiDitambah: "{nama} kini penguji.",
+  pengujiDihapus: "{nama} bukan penguji lagi.",
+  hapusPenguji: "Hapus",
+  hapusPengujiDari: "Hapus {nama} dari penguji",
+  belumAdaPenguji: "Belum ada penguji",
+  teksBelumAdaPenguji: "Tambahkan email teman setim yang akan melakukan QC.",
+  jumlahLaporan: "{jumlah} laporan",
+  admin: "Admin",
+  mahasiswa: "Mahasiswa",
+} as const;
+
+/** Ganti `{kunci}` di teks dengan nilai. */
+export function isi(teks: string, nilai: Record<string, string | number>): string {
+  return teks.replace(/\{(\w+)\}/g, (_, k: string) => String(nilai[k] ?? `{${k}}`));
+}

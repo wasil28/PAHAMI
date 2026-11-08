@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
+// cacheComponents sengaja tidak diaktifkan: hampir semua halaman bergantung pada sesi login
+// (cookie Supabase), jadi rendering dinamis per permintaan lebih sederhana dan aman.
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  serverExternalPackages: ["unpdf"],
   turbopack: {
     rules: {
       "*.css": {

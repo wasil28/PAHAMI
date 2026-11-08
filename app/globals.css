@@ -1,26 +1,546 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Token desain Pahami — Material Design 3 (Panduan §1, KEPUTUSAN §2).
+ * Komponen HANYA boleh memakai class token (bg-primary, text-title-medium,
+ * rounded-md, shadow-1, …). Dilarang hex di komponen.
+ * Warna di blok TEMA dibuat oleh `node scripts/generate-tema.mjs`.
+ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Mode gelap manual lewat class `.dark` di <html> (selain prefers-color-scheme). */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not(.light) *, :root:not(.light)) {
+      @slot;
+    }
+  }
+  &:where(.dark, .dark *) {
+    @slot;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Matikan palet bawaan Tailwind (red-500, dst.) agar hanya token M3 yang bisa dipakai. */
+@theme {
+  --color-*: initial;
+}
+
+/* TEMA:MULAI — dibuat otomatis oleh scripts/generate-tema.mjs (seed #1F6F5C). Jangan edit manual. */
+:root {
+  color-scheme: light;
+  --md-primary: #0f6b57;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #a2f2d9;
+  --md-on-primary-container: #005141;
+  --md-inverse-primary: #86d6be;
+  --md-secondary: #4b635b;
+  --md-on-secondary: #ffffff;
+  --md-secondary-container: #cde9de;
+  --md-on-secondary-container: #344c44;
+  --md-tertiary: #416277;
+  --md-on-tertiary: #ffffff;
+  --md-tertiary-container: #c5e7ff;
+  --md-on-tertiary-container: #284b5e;
+  --md-error: #ba1a1a;
+  --md-on-error: #ffffff;
+  --md-error-container: #ffdad6;
+  --md-on-error-container: #93000a;
+  --md-background: #f5fbf6;
+  --md-on-background: #171d1b;
+  --md-surface: #f5fbf6;
+  --md-on-surface: #171d1b;
+  --md-surface-variant: #dbe5df;
+  --md-on-surface-variant: #3f4945;
+  --md-surface-dim: #d5dbd7;
+  --md-surface-bright: #f5fbf6;
+  --md-surface-container-lowest: #ffffff;
+  --md-surface-container-low: #eff5f1;
+  --md-surface-container: #e9efeb;
+  --md-surface-container-high: #e3eae5;
+  --md-surface-container-highest: #dee4e0;
+  --md-inverse-surface: #2b322f;
+  --md-inverse-on-surface: #ecf2ee;
+  --md-outline: #6f7975;
+  --md-outline-variant: #bfc9c4;
+  --md-shadow: #000000;
+  --md-scrim: #000000;
+  --md-surface-tint: #0f6b57;
+  --md-success: #006d43;
+  --md-on-success: #ffffff;
+  --md-success-container: #92f7bc;
+  --md-on-success-container: #002111;
+  --md-warning: #7d5700;
+  --md-on-warning: #ffffff;
+  --md-warning-container: #ffdeaa;
+  --md-on-warning-container: #271900;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+    --md-primary: #86d6be;
+    --md-on-primary: #00382c;
+    --md-primary-container: #005141;
+    --md-on-primary-container: #a2f2d9;
+    --md-inverse-primary: #0f6b57;
+    --md-secondary: #b2ccc2;
+    --md-on-secondary: #1d352e;
+    --md-secondary-container: #344c44;
+    --md-on-secondary-container: #cde9de;
+    --md-tertiary: #a9cbe2;
+    --md-on-tertiary: #0e3446;
+    --md-tertiary-container: #284b5e;
+    --md-on-tertiary-container: #c5e7ff;
+    --md-error: #ffb4ab;
+    --md-on-error: #690005;
+    --md-error-container: #93000a;
+    --md-on-error-container: #ffdad6;
+    --md-background: #0f1512;
+    --md-on-background: #dee4e0;
+    --md-surface: #0f1512;
+    --md-on-surface: #dee4e0;
+    --md-surface-variant: #3f4945;
+    --md-on-surface-variant: #bfc9c4;
+    --md-surface-dim: #0f1512;
+    --md-surface-bright: #343b38;
+    --md-surface-container-lowest: #090f0d;
+    --md-surface-container-low: #171d1b;
+    --md-surface-container: #1b211f;
+    --md-surface-container-high: #252b29;
+    --md-surface-container-highest: #303633;
+    --md-inverse-surface: #dee4e0;
+    --md-inverse-on-surface: #2b322f;
+    --md-outline: #89938e;
+    --md-outline-variant: #3f4945;
+    --md-shadow: #000000;
+    --md-scrim: #000000;
+    --md-surface-tint: #86d6be;
+    --md-success: #76daa1;
+    --md-on-success: #003920;
+    --md-success-container: #005231;
+    --md-on-success-container: #92f7bc;
+    --md-warning: #f9bc49;
+    --md-on-warning: #422c00;
+    --md-warning-container: #5f4100;
+    --md-on-warning-container: #ffdeaa;
+  }
+}
+
+:root.dark {
+  color-scheme: dark;
+  --md-primary: #86d6be;
+  --md-on-primary: #00382c;
+  --md-primary-container: #005141;
+  --md-on-primary-container: #a2f2d9;
+  --md-inverse-primary: #0f6b57;
+  --md-secondary: #b2ccc2;
+  --md-on-secondary: #1d352e;
+  --md-secondary-container: #344c44;
+  --md-on-secondary-container: #cde9de;
+  --md-tertiary: #a9cbe2;
+  --md-on-tertiary: #0e3446;
+  --md-tertiary-container: #284b5e;
+  --md-on-tertiary-container: #c5e7ff;
+  --md-error: #ffb4ab;
+  --md-on-error: #690005;
+  --md-error-container: #93000a;
+  --md-on-error-container: #ffdad6;
+  --md-background: #0f1512;
+  --md-on-background: #dee4e0;
+  --md-surface: #0f1512;
+  --md-on-surface: #dee4e0;
+  --md-surface-variant: #3f4945;
+  --md-on-surface-variant: #bfc9c4;
+  --md-surface-dim: #0f1512;
+  --md-surface-bright: #343b38;
+  --md-surface-container-lowest: #090f0d;
+  --md-surface-container-low: #171d1b;
+  --md-surface-container: #1b211f;
+  --md-surface-container-high: #252b29;
+  --md-surface-container-highest: #303633;
+  --md-inverse-surface: #dee4e0;
+  --md-inverse-on-surface: #2b322f;
+  --md-outline: #89938e;
+  --md-outline-variant: #3f4945;
+  --md-shadow: #000000;
+  --md-scrim: #000000;
+  --md-surface-tint: #86d6be;
+  --md-success: #76daa1;
+  --md-on-success: #003920;
+  --md-success-container: #005231;
+  --md-on-success-container: #92f7bc;
+  --md-warning: #f9bc49;
+  --md-on-warning: #422c00;
+  --md-warning-container: #5f4100;
+  --md-on-warning-container: #ffdeaa;
+}
+
+/* Mode terang paksa (mis. di halaman showcase) */
+:root.light,
+.tema-terang {
+  color-scheme: light;
+  --md-primary: #0f6b57;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #a2f2d9;
+  --md-on-primary-container: #005141;
+  --md-inverse-primary: #86d6be;
+  --md-secondary: #4b635b;
+  --md-on-secondary: #ffffff;
+  --md-secondary-container: #cde9de;
+  --md-on-secondary-container: #344c44;
+  --md-tertiary: #416277;
+  --md-on-tertiary: #ffffff;
+  --md-tertiary-container: #c5e7ff;
+  --md-on-tertiary-container: #284b5e;
+  --md-error: #ba1a1a;
+  --md-on-error: #ffffff;
+  --md-error-container: #ffdad6;
+  --md-on-error-container: #93000a;
+  --md-background: #f5fbf6;
+  --md-on-background: #171d1b;
+  --md-surface: #f5fbf6;
+  --md-on-surface: #171d1b;
+  --md-surface-variant: #dbe5df;
+  --md-on-surface-variant: #3f4945;
+  --md-surface-dim: #d5dbd7;
+  --md-surface-bright: #f5fbf6;
+  --md-surface-container-lowest: #ffffff;
+  --md-surface-container-low: #eff5f1;
+  --md-surface-container: #e9efeb;
+  --md-surface-container-high: #e3eae5;
+  --md-surface-container-highest: #dee4e0;
+  --md-inverse-surface: #2b322f;
+  --md-inverse-on-surface: #ecf2ee;
+  --md-outline: #6f7975;
+  --md-outline-variant: #bfc9c4;
+  --md-shadow: #000000;
+  --md-scrim: #000000;
+  --md-surface-tint: #0f6b57;
+  --md-success: #006d43;
+  --md-on-success: #ffffff;
+  --md-success-container: #92f7bc;
+  --md-on-success-container: #002111;
+  --md-warning: #7d5700;
+  --md-on-warning: #ffffff;
+  --md-warning-container: #ffdeaa;
+  --md-on-warning-container: #271900;
+}
+
+.tema-gelap {
+  color-scheme: dark;
+  --md-primary: #86d6be;
+  --md-on-primary: #00382c;
+  --md-primary-container: #005141;
+  --md-on-primary-container: #a2f2d9;
+  --md-inverse-primary: #0f6b57;
+  --md-secondary: #b2ccc2;
+  --md-on-secondary: #1d352e;
+  --md-secondary-container: #344c44;
+  --md-on-secondary-container: #cde9de;
+  --md-tertiary: #a9cbe2;
+  --md-on-tertiary: #0e3446;
+  --md-tertiary-container: #284b5e;
+  --md-on-tertiary-container: #c5e7ff;
+  --md-error: #ffb4ab;
+  --md-on-error: #690005;
+  --md-error-container: #93000a;
+  --md-on-error-container: #ffdad6;
+  --md-background: #0f1512;
+  --md-on-background: #dee4e0;
+  --md-surface: #0f1512;
+  --md-on-surface: #dee4e0;
+  --md-surface-variant: #3f4945;
+  --md-on-surface-variant: #bfc9c4;
+  --md-surface-dim: #0f1512;
+  --md-surface-bright: #343b38;
+  --md-surface-container-lowest: #090f0d;
+  --md-surface-container-low: #171d1b;
+  --md-surface-container: #1b211f;
+  --md-surface-container-high: #252b29;
+  --md-surface-container-highest: #303633;
+  --md-inverse-surface: #dee4e0;
+  --md-inverse-on-surface: #2b322f;
+  --md-outline: #89938e;
+  --md-outline-variant: #3f4945;
+  --md-shadow: #000000;
+  --md-scrim: #000000;
+  --md-surface-tint: #86d6be;
+  --md-success: #76daa1;
+  --md-on-success: #003920;
+  --md-success-container: #005231;
+  --md-on-success-container: #92f7bc;
+  --md-warning: #f9bc49;
+  --md-on-warning: #422c00;
+  --md-warning-container: #5f4100;
+  --md-on-warning-container: #ffdeaa;
+}
+
+@theme inline {
+  --color-primary: var(--md-primary);
+  --color-on-primary: var(--md-on-primary);
+  --color-primary-container: var(--md-primary-container);
+  --color-on-primary-container: var(--md-on-primary-container);
+  --color-inverse-primary: var(--md-inverse-primary);
+  --color-secondary: var(--md-secondary);
+  --color-on-secondary: var(--md-on-secondary);
+  --color-secondary-container: var(--md-secondary-container);
+  --color-on-secondary-container: var(--md-on-secondary-container);
+  --color-tertiary: var(--md-tertiary);
+  --color-on-tertiary: var(--md-on-tertiary);
+  --color-tertiary-container: var(--md-tertiary-container);
+  --color-on-tertiary-container: var(--md-on-tertiary-container);
+  --color-error: var(--md-error);
+  --color-on-error: var(--md-on-error);
+  --color-error-container: var(--md-error-container);
+  --color-on-error-container: var(--md-on-error-container);
+  --color-background: var(--md-background);
+  --color-on-background: var(--md-on-background);
+  --color-surface: var(--md-surface);
+  --color-on-surface: var(--md-on-surface);
+  --color-surface-variant: var(--md-surface-variant);
+  --color-on-surface-variant: var(--md-on-surface-variant);
+  --color-surface-dim: var(--md-surface-dim);
+  --color-surface-bright: var(--md-surface-bright);
+  --color-surface-container-lowest: var(--md-surface-container-lowest);
+  --color-surface-container-low: var(--md-surface-container-low);
+  --color-surface-container: var(--md-surface-container);
+  --color-surface-container-high: var(--md-surface-container-high);
+  --color-surface-container-highest: var(--md-surface-container-highest);
+  --color-inverse-surface: var(--md-inverse-surface);
+  --color-inverse-on-surface: var(--md-inverse-on-surface);
+  --color-outline: var(--md-outline);
+  --color-outline-variant: var(--md-outline-variant);
+  --color-shadow: var(--md-shadow);
+  --color-scrim: var(--md-scrim);
+  --color-surface-tint: var(--md-surface-tint);
+  --color-success: var(--md-success);
+  --color-on-success: var(--md-on-success);
+  --color-success-container: var(--md-success-container);
+  --color-on-success-container: var(--md-on-success-container);
+  --color-warning: var(--md-warning);
+  --color-on-warning: var(--md-on-warning);
+  --color-warning-container: var(--md-warning-container);
+  --color-on-warning-container: var(--md-on-warning-container);
+}
+/* TEMA:SELESAI */
+
+@theme {
+  /* Font: Plus Jakarta Sans (F2) dari next/font, variabel diset di app/layout.tsx */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  /* Window size class M3: compact < 600, medium 600–839, expanded ≥ 840, large ≥ 1200 */
+  --breakpoint-medium: 600px;
+  --breakpoint-expanded: 840px;
+  --breakpoint-large: 1200px;
+
+  /* Skala tipe M3 (Panduan §1.4): ukuran / tinggi baris / tebal / jarak huruf */
+  --text-display-large: 3.5625rem;
+  --text-display-large--line-height: 4rem;
+  --text-display-large--font-weight: 400;
+  --text-display-large--letter-spacing: -0.016em;
+  --text-display-medium: 2.8125rem;
+  --text-display-medium--line-height: 3.25rem;
+  --text-display-medium--font-weight: 400;
+  --text-display-small: 2.25rem;
+  --text-display-small--line-height: 2.75rem;
+  --text-display-small--font-weight: 400;
+  --text-headline-large: 2rem;
+  --text-headline-large--line-height: 2.5rem;
+  --text-headline-large--font-weight: 400;
+  --text-headline-medium: 1.75rem;
+  --text-headline-medium--line-height: 2.25rem;
+  --text-headline-medium--font-weight: 400;
+  --text-headline-small: 1.5rem;
+  --text-headline-small--line-height: 2rem;
+  --text-headline-small--font-weight: 400;
+  --text-title-large: 1.375rem;
+  --text-title-large--line-height: 1.75rem;
+  --text-title-large--font-weight: 400;
+  --text-title-medium: 1rem;
+  --text-title-medium--line-height: 1.5rem;
+  --text-title-medium--font-weight: 500;
+  --text-title-medium--letter-spacing: 0.009em;
+  --text-title-small: 0.875rem;
+  --text-title-small--line-height: 1.25rem;
+  --text-title-small--font-weight: 500;
+  --text-title-small--letter-spacing: 0.007em;
+  --text-body-large: 1rem;
+  --text-body-large--line-height: 1.5rem;
+  --text-body-large--font-weight: 400;
+  --text-body-large--letter-spacing: 0.031em;
+  --text-body-medium: 0.875rem;
+  --text-body-medium--line-height: 1.25rem;
+  --text-body-medium--font-weight: 400;
+  --text-body-medium--letter-spacing: 0.018em;
+  --text-body-small: 0.75rem;
+  --text-body-small--line-height: 1rem;
+  --text-body-small--font-weight: 400;
+  --text-body-small--letter-spacing: 0.033em;
+  --text-label-large: 0.875rem;
+  --text-label-large--line-height: 1.25rem;
+  --text-label-large--font-weight: 500;
+  --text-label-large--letter-spacing: 0.007em;
+  --text-label-medium: 0.75rem;
+  --text-label-medium--line-height: 1rem;
+  --text-label-medium--font-weight: 500;
+  --text-label-medium--letter-spacing: 0.042em;
+  --text-label-small: 0.6875rem;
+  --text-label-small--line-height: 1rem;
+  --text-label-small--font-weight: 500;
+  --text-label-small--letter-spacing: 0.045em;
+
+  /* Skala bentuk M3 (Panduan §1.5) */
+  --radius-none: 0;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 28px;
+
+  /* Elevasi M3 (Panduan §1.6) — level 1/2/3 ≈ 1/3/6 dp */
+  --shadow-1: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 1px 3px 1px rgb(0 0 0 / 0.15);
+  --shadow-2: 0 1px 2px 0 rgb(0 0 0 / 0.3), 0 2px 6px 2px rgb(0 0 0 / 0.15);
+  --shadow-3: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 4px 8px 3px rgb(0 0 0 / 0.15);
+  --shadow-4: 0 2px 3px 0 rgb(0 0 0 / 0.3), 0 6px 10px 4px rgb(0 0 0 / 0.15);
+
+  /* Gerak M3 (standard easing) */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  --animate-indeterminate: indeterminate 1.6s var(--ease-standard) infinite;
+  --animate-masuk: masuk 200ms var(--ease-standard);
+
+  @keyframes indeterminate {
+    0% {
+      left: -40%;
+      width: 40%;
+    }
+    60% {
+      width: 55%;
+    }
+    100% {
+      left: 100%;
+      width: 40%;
+    }
+  }
+  @keyframes masuk {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background-color: var(--md-surface);
+    color: var(--md-on-surface);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background-color: var(--md-primary-container);
+    color: var(--md-on-primary-container);
+  }
+  /* Indikator fokus M3: garis 3dp warna secondary, jarak 2dp — wajib terlihat (Panduan §1.9) */
+  :focus-visible {
+    outline: 3px solid var(--md-secondary);
+    outline-offset: 2px;
+  }
+  dialog::backdrop {
+    background-color: rgb(0 0 0 / 0.32);
+  }
+}
+
+@layer components {
+  /* Material Symbols Rounded. Lebar dikunci 1em agar teks ligatur tidak merusak tata letak saat font belum siap. */
+  .ikon {
+    font-family: "Material Symbols Rounded";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    direction: ltr;
+    flex-shrink: 0;
+    user-select: none;
+    font-feature-settings: "liga";
+    font-variation-settings:
+      "FILL" 0,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 24;
+  }
+  .ikon-isi {
+    font-variation-settings:
+      "FILL" 1,
+      "wght" 400,
+      "GRAD" 0,
+      "opsz" 24;
+  }
+
+  /*
+   * State layer M3 (Panduan §1.6): lapisan warna `currentColor` di atas elemen.
+   * hover 8% · fokus 10% · ditekan 10% · diseret 16%.
+   */
+  .state-layer {
+    position: relative;
+    isolation: isolate;
+  }
+  .state-layer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms var(--ease-standard);
+    z-index: -1;
+  }
+  @media (hover: hover) {
+    .state-layer:hover::before {
+      opacity: 0.08;
+    }
+  }
+  .state-layer:focus-visible::before,
+  .state-layer:has(:focus-visible)::before {
+    opacity: 0.1;
+  }
+  .state-layer:active::before {
+    opacity: 0.1;
+  }
+  .state-layer[data-seret="true"]::before {
+    opacity: 0.16;
+  }
+  .state-layer:disabled::before,
+  .state-layer[aria-disabled="true"]::before {
+    opacity: 0;
+  }
+}
+
+@utility scrollbar-tipis {
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-outline-variant) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

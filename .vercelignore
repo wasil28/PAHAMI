@@ -1,0 +1,7 @@
+.env*
+!.env.example
+.next
+node_modules
+graphify-out
+supabase/.temp
+*.log
